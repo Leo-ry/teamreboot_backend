@@ -1,0 +1,15 @@
+## Server Default Setting
+server:
+  port: 18080
+  shutdown: graceful
+
+## Spring Default Setting
+spring:
+  application:
+    name: team-reboot
+  profiles:
+    default: local
+    active:
+      - local
+#      - dev
+#      - prod
