@@ -8,30 +8,29 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "credit_usage")
 class CreditUsage(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    val creditUsageId: Long = 0,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    val customer: Customer? = null,
+    var customer: Customer? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_id")
-    val feature: Feature? = null,
+    var feature: Feature? = null,
 
     @Column(name = "used_at")
-    val usedAt: LocalDateTime = LocalDateTime.now(),
+    var usedAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "unit_used")
-    val unitUsed: Long = 0,
+    var unitUsed: Long = 0,
 
     @Column(name = "credit_used")
-    val creditUsed: Long = 0,
+    var creditUsed: Long = 0,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    val status: Status = Status.CHARS,
-) : BaseEntity()
+    var status: Status = Status.CHARS,
+) : BaseEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    val creditUsageId: Long = 0
+}
