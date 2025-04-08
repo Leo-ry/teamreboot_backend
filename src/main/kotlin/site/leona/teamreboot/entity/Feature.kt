@@ -2,6 +2,7 @@ package site.leona.teamreboot.entity
 
 import jakarta.persistence.*
 import site.leona.teamreboot.common.entity.BaseEntity
+import site.leona.teamreboot.entity.enums.FeatureUnit
 import site.leona.teamreboot.entity.enums.Status
 
 @Entity
@@ -19,9 +20,9 @@ data class Feature (
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unit")
-    var unit: Status
+    var unit: FeatureUnit = FeatureUnit.CHARS,
 
-) : BaseEntity() {
+    ) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 import site.leona.teamreboot.model.PlanDto
 import site.leona.teamreboot.service.PlanService
 
-@Tag(name = "요금제 관련 기능", description = "")
+@Tag(name = "요금제 관련 기능")
 @RequestMapping("/api/plans")
 @RestController
 class PlanRestController(

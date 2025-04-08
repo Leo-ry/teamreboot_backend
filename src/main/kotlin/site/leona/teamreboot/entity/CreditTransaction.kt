@@ -2,6 +2,8 @@ package site.leona.teamreboot.entity
 
 import jakarta.persistence.*
 import site.leona.teamreboot.common.entity.BaseEntity
+import site.leona.teamreboot.entity.QCustomer.customer
+import site.leona.teamreboot.entity.enums.CreditUsageStatus
 import site.leona.teamreboot.entity.enums.Type
 
 @Entity
@@ -25,4 +27,15 @@ class CreditTransaction(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     val creditTransactionId: Long = 0
+
+    companion object {
+        fun doCreate(customer: Customer, amount: Long, type: Type, relatedCreditUsage: CreditUsage): CreditTransaction {
+            return CreditTransaction(
+                customer = customer,
+                amount = 0,
+                type = Type.USAGE,
+                relatedCreditUsage = relatedCreditUsage,
+            )
+        }
+    }
 }

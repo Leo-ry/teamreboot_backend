@@ -2,7 +2,7 @@ package site.leona.teamreboot.entity
 
 import jakarta.persistence.*
 import site.leona.teamreboot.common.entity.BaseEntity
-import site.leona.teamreboot.entity.enums.Status
+import site.leona.teamreboot.entity.enums.CreditUsageStatus
 import java.time.LocalDateTime
 
 @Entity
@@ -27,10 +27,21 @@ class CreditUsage(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    var status: Status = Status.CHARS,
-) : BaseEntity() {
+    var status: CreditUsageStatus = CreditUsageStatus.USAGE,
+
+    ) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     val creditUsageId: Long = 0
+
+    companion object {
+        fun doCreate(customer: Customer, feature: Feature, usedAt: LocalDateTime, creditUsed: Long, status: CreditUsageStatus): CreditUsage {
+            return CreditUsage(customer = customer
+                , feature = feature
+                , usedAt = usedAt
+                , unitUsed = creditUsed
+                , status = status)
+        }
+    }
 }

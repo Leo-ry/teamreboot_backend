@@ -5,7 +5,7 @@ import site.leona.teamreboot.common.entity.BaseEntity
 
 @Entity
 @Table(name = "plan_feature")
-data class PlanFeature(
+class PlanFeature(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id")
     var plan: Plan? = null,
@@ -16,7 +16,6 @@ data class PlanFeature(
 
     @Column(name = "custom_limit")
     var customLimit: Long = 0,
-
 ) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

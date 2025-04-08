@@ -2,6 +2,8 @@ package site.leona.teamreboot.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import site.leona.teamreboot.common.entity.enums.ErrorCode
+import site.leona.teamreboot.config.exception.BusinessException
 import site.leona.teamreboot.entity.Plan
 import site.leona.teamreboot.model.PlanDto
 import site.leona.teamreboot.repository.FeatureRepository
@@ -31,7 +33,7 @@ class PlanServiceImpl(
 
         // 해당기능으로 생성된 요금제에 대해서 기능 연결
         val newPlanFeatures = param.features.map { f ->
-            val feature = activeFeatures[f.id] ?: throw IllegalStateException("Feature not found")
+            val feature = activeFeatures[f.id] ?: throw BusinessException(ErrorCode.FEATURE_NOT_FOUND)
             f.toPlanFeature(newPlan, feature, f.customLimit).invoke()
         }
 

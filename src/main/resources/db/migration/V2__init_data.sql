@@ -23,7 +23,7 @@ INSERT INTO customer (name, credit_balance, plan_id)
 VALUES ('법무법인 단앤장', 10000, 1);
 
 INSERT INTO customer (name, credit_balance, plan_id)
-VALUES ('WW', 10000, 1);
+VALUES ('BLDO', 10000, 1);
 
 -- 요금제-기능 연결
 INSERT INTO plan_feature (plan_id, feature_id, custom_limit)

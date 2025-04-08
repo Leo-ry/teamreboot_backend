@@ -12,11 +12,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.HandlerMethodValidationException
 import site.leona.teamreboot.common.model.GlobalResponse
 import site.leona.teamreboot.common.model.RequestContext
+import site.leona.teamreboot.config.exception.BusinessException
 import java.time.Instant
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(basePackages = ["com.site.leona.teamreboot.api"])
 class FailHandler {
+
+    @ExceptionHandler(BusinessException::class)
+    fun businessFailure(exception:BusinessException, request: HttpServletRequest): ResponseEntity<GlobalResponse<Nothing>> {
+        val start: Instant = RequestContext.getStartTime()
+        val errorMsg: String = exception.message.toString()
+
+        val response = GlobalResponse.error<Nothing>(
+            message = "비즈니스 오류발생: $errorMsg",
+            path = request.requestURL.toString(),
+            start = start
+        )
+
+        return ResponseEntity.status(exception.getStatus()).body(response)
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun methodArgValid(exception: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<GlobalResponse<Nothing>> {

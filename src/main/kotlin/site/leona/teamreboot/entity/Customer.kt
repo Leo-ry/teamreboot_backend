@@ -23,7 +23,11 @@ class Customer(
     @Column(name = "id")
     val customerId: Long = 0
 
-    fun changePlan(newPlan: Plan) {
+    fun modifyPlan(newPlan: Plan) {
         this.plan = newPlan
+    }
+
+    fun modifyCreditBalance(newCreditBalance: Long) {
+        this.creditBalance = newCreditBalance
     }
 }

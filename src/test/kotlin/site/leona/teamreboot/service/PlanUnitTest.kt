@@ -11,7 +11,7 @@ import site.leona.teamreboot.common.entity.enums.ResponseStatus
 import site.leona.teamreboot.entity.Feature
 import site.leona.teamreboot.entity.Plan
 import site.leona.teamreboot.entity.PlanFeature
-import site.leona.teamreboot.entity.enums.Status
+import site.leona.teamreboot.entity.enums.FeatureUnit
 import site.leona.teamreboot.model.PlanDto
 import site.leona.teamreboot.repository.FeatureRepository
 import site.leona.teamreboot.repository.PlanFeatureRepository
@@ -37,7 +37,7 @@ class PlanUnitTest {
     @Test
     fun `요금제_정상생성_테스트`() {
         val featureId: Long = 0L
-        val feature = Feature(name = "AI 번역", defaultLimit = 2000, creditPerUse = 10, unit = Status.CHARS)
+        val feature = Feature(name = "AI 번역", defaultLimit = 2000, creditPerUse = 10, unit = FeatureUnit.CHARS)
 
         val param = PlanDto.CreateParam(
             name = "테스트 요금제1",
