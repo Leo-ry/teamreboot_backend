@@ -35,17 +35,6 @@ object CustomerDto {
         @field:Min(1)
         val unitUsed: Long
     ) {
-        companion object {
-            fun doCreateCreditUsage(customer: Customer
-                                    , feature: Feature
-                                    , unitUsed: Long
-                                    , cerditUsed: Long
-                                    , status: Status
-            ): () -> CreditUsage {
-                return
-            }
-        }
-
         fun doChangeCustomer(customer: Customer, newCreditBalance: Long) {
             customer.modifyCreditBalance(newCreditBalance)
         }

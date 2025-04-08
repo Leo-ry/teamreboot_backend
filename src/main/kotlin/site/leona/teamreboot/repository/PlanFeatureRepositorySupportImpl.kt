@@ -8,8 +8,8 @@ import site.leona.teamreboot.entity.QPlan
 import site.leona.teamreboot.entity.QPlanFeature
 
 @Repository
-class PlanFeatureRepositorySupportImpl(domainClass: Class<PlanFeature>) : PlanFeatureRepositorySupport, CommonRepositorySupport(
-    domainClass
+class PlanFeatureRepositorySupportImpl: PlanFeatureRepositorySupport, CommonRepositorySupport(
+    PlanFeature::class.java,
 ) {
     override fun getCustomerPlanFeature(customerId: Long, featureId: Long): PlanFeature? {
         // Entity

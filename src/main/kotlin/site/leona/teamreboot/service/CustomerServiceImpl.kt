@@ -1,7 +1,6 @@
 package site.leona.teamreboot.service
 
 import jakarta.transaction.Transactional
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import site.leona.teamreboot.common.entity.enums.ErrorCode
 import site.leona.teamreboot.config.exception.BusinessException
@@ -20,7 +19,6 @@ class CustomerServiceImpl(
     private val creditTransactionRepository: CreditTransactionRepository,
     private val customerRepository: CustomerRepository,
     private val planRepository: PlanRepository,
-//    private val planFeatureRepository: PlanFeatureRepository
     private val planFeatureRepositorySupport: PlanFeatureRepositorySupport,
 ): CustomerService {
     override fun assignPlan(customerId: Long, param: CustomerDto.AssignPlanParam): CustomerDto.AssignPlanResponse {

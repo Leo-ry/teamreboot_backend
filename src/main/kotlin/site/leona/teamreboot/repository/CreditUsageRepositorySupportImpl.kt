@@ -12,8 +12,8 @@ import site.leona.teamreboot.model.StatisticsDto
 import java.time.LocalDate
 
 @Repository
-class CreditUsageRepositorySupportImpl(domainClass: Class<CreditUsage>) : CreditUsageRespositorySupport, CommonRepositorySupport(
-    domainClass
+class CreditUsageRepositorySupportImpl: CreditUsageRepositorySupport, CommonRepositorySupport(
+    CreditUsage::class.java,
 ) {
     override fun getCustomerCreditUsages(
         customerId: Long,

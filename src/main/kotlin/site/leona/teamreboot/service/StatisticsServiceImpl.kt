@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 import site.leona.teamreboot.common.entity.enums.ErrorCode
 import site.leona.teamreboot.config.exception.BusinessException
 import site.leona.teamreboot.model.StatisticsDto
-import site.leona.teamreboot.repository.CreditUsageRespositorySupport
+import site.leona.teamreboot.repository.CreditUsageRepositorySupport
 import site.leona.teamreboot.repository.CustomerRepository
 import java.time.LocalDate
 
@@ -13,7 +13,7 @@ import java.time.LocalDate
 @Service
 class StatisticsServiceImpl(
     private val customerRepository: CustomerRepository,
-    private val creditUsageRepositorySupport: CreditUsageRespositorySupport
+    private val creditUsageRepositorySupport: CreditUsageRepositorySupport
 ): StatisticsService {
     override fun getCustomerUsages(
         customerId: Long,
