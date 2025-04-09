@@ -19,9 +19,8 @@ class PlanServiceImpl(
 ): PlanService {
 
     override fun createPlan(param: PlanDto.CreateParam): PlanDto.CreateResponse {
-        // 받아온 파라미터를 기초로 요금제 생성 -> 중복생성 처리어떻게?
-        val newPlan: Plan = param.toPlan().invoke()
-        planRepository.save(newPlan)
+        // 받아온 파라미터를 기초로 요금제 생성 -> 코틀린에서는 생성한 객체를 다시 새로운 변수에 담지않는 경우 id 값이 자바의 리플렉션처럼 반영되지않음 -> 반드시 생성된 객체는 신규 변수로 선언해서 받을 것
+        val newPlan = planRepository.save(param.toPlan().invoke())
 
         // 필요한 기능에 대해서 실제로 존재하는 기능인지, 활성화 상태인지 체크
         val featureIds: List<Long> = param.features.map { it.id }
@@ -29,18 +28,18 @@ class PlanServiceImpl(
 
         if (featureIds.size != activeFeatures.size) {
             // TODO 비즈니스 예외처리 할것
+            throw BusinessException(ErrorCode.FEATURE_NOT_FOUND)
         }
 
         // 해당기능으로 생성된 요금제에 대해서 기능 연결
         val newPlanFeatures = param.features.map { f ->
             val feature = activeFeatures[f.id] ?: throw BusinessException(ErrorCode.FEATURE_NOT_FOUND)
-            f.toPlanFeature(newPlan, feature, f.customLimit).invoke()
+            f.toPlanFeature(newPlan, feature, f.customLimit)
         }
 
         planFeatureRepository.saveAll(newPlanFeatures)
 
         // 처리완료 후 리턴객체 생성
-
         return PlanDto.CreateResponse(newPlan.planId)
     }
 

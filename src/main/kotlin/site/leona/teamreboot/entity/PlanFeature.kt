@@ -23,8 +23,8 @@ class PlanFeature(
     val planFeatureId: Long = 0
 
     companion object {
-        fun toPlanFeature(plan: Plan, feature: Feature, customLimit: Long): () -> PlanFeature {
-            return { PlanFeature(plan, feature, customLimit) }
+        fun toPlanFeature(plan: Plan, feature: Feature, customLimit: Long): PlanFeature {
+            return PlanFeature(plan, feature, customLimit)
         }
     }
 }

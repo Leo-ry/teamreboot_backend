@@ -17,7 +17,6 @@ object PlanDto {
         @field:NotBlank
         val name: String = "",
 
-        @field:NotBlank
         @field:Size(min = 1, message = "최소한 1개 이상의 기능을 선택해주세요.")
         val features: List<FeatureModel> = emptyList()
     ) {
@@ -35,8 +34,8 @@ object PlanDto {
         val customLimit: Long = 0
     ) {
         // 생성된 요금제에 기능 추가
-        fun toPlanFeature(plan: Plan, feature: Feature, customLimit: Long): () -> PlanFeature {
-            return { PlanFeature.toPlanFeature(plan, feature, customLimit).invoke() }
+        fun toPlanFeature(plan: Plan, feature: Feature, customLimit: Long): PlanFeature {
+            return PlanFeature.toPlanFeature(plan, feature, customLimit)
         }
     }
 }

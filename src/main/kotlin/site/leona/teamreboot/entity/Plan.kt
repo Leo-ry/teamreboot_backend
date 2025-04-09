@@ -2,7 +2,6 @@ package site.leona.teamreboot.entity
 
 import jakarta.persistence.*
 import site.leona.teamreboot.common.entity.BaseEntity
-import java.util.function.Supplier
 
 @Entity
 @Table(name = "plan")
@@ -14,9 +13,6 @@ class Plan(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     val planId: Long? = 0L
-
-    @OneToMany(mappedBy = "plan" ,fetch = FetchType.LAZY)
-    val planFeature: MutableList<PlanFeature> = mutableListOf()
 
     companion object {
         fun doCreate(name: String): () -> Plan {
