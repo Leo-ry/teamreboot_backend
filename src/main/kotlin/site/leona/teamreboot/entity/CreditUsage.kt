@@ -36,11 +36,12 @@ class CreditUsage(
     val creditUsageId: Long = 0
 
     companion object {
-        fun doCreate(customer: Customer, feature: Feature, usedAt: LocalDateTime, creditUsed: Long, status: CreditUsageStatus): CreditUsage {
+        fun doCreate(customer: Customer, feature: Feature, usedAt: LocalDateTime, unitUsed:Long, creditUsed: Long, status: CreditUsageStatus): CreditUsage {
             return CreditUsage(customer = customer
                 , feature = feature
                 , usedAt = usedAt
-                , unitUsed = creditUsed
+                , unitUsed = unitUsed
+                , creditUsed = creditUsed
                 , status = status)
         }
     }

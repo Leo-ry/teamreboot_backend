@@ -20,7 +20,7 @@ class CreditTransaction(
     var type: Type = Type.USAGE,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_usage_id")
+    @JoinColumn(name = "related_usage_id")
     var relatedCreditUsage: CreditUsage? = null,
 ) : BaseEntity() {
     @Id
@@ -32,8 +32,8 @@ class CreditTransaction(
         fun doCreate(customer: Customer, amount: Long, type: Type, relatedCreditUsage: CreditUsage): CreditTransaction {
             return CreditTransaction(
                 customer = customer,
-                amount = 0,
-                type = Type.USAGE,
+                amount = amount,
+                type = type,
                 relatedCreditUsage = relatedCreditUsage,
             )
         }

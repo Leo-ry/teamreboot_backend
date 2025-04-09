@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mariadb:11.7.2
+    container_name: teamreboot-mariadb
+    ports:
+      - "13306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: teamreboot
+      MARIADB_USER: user
+      MARIADB_PASSWORD: pass
+    volumes:
+      - db-data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+    container_name: teamreboot-app
+    ports:
+      - "8080:18080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/teamreboot
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+
+
+volumes:
+  db-data:
+

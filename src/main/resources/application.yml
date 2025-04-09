@@ -10,6 +10,6 @@ spring:
   profiles:
     default: local
     active:
-      - local
-#      - dev
+#      - local
+      - dev
 #      - prod

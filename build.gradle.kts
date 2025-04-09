@@ -29,6 +29,7 @@ repositories {
 dependencies {
     // DB 초기화를 위한 Flyway 적용 -> DB 마이그레이션 버전관리
     implementation("org.flywaydb:flyway-core:11.6.0")
+    implementation("org.flywaydb:flyway-mysql:11.6.0")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
@@ -52,6 +53,7 @@ dependencies {
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    runtimeOnly("com.mysql:mysql-connector-j:9.2.0")
 
     // Swagger 3.0
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")

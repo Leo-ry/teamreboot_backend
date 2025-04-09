@@ -7,9 +7,11 @@ import site.leona.teamreboot.config.exception.BusinessException
 import site.leona.teamreboot.entity.CreditTransaction
 import site.leona.teamreboot.entity.CreditUsage
 import site.leona.teamreboot.entity.enums.CreditUsageStatus
+import site.leona.teamreboot.entity.enums.FeatureUnit
 import site.leona.teamreboot.entity.enums.Type
 import site.leona.teamreboot.model.CustomerDto
 import site.leona.teamreboot.repository.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Transactional
@@ -20,6 +22,7 @@ class CustomerServiceImpl(
     private val customerRepository: CustomerRepository,
     private val planRepository: PlanRepository,
     private val planFeatureRepositorySupport: PlanFeatureRepositorySupport,
+    private val creditUsageRepositorySupport: CreditUsageRepositorySupport,
 ): CustomerService {
     override fun assignPlan(customerId: Long, param: CustomerDto.AssignPlanParam): CustomerDto.AssignPlanResponse {
         // 1. 가져온 고객 ID 로 실제 존재하는 고객인지 확인
@@ -48,12 +51,28 @@ class CustomerServiceImpl(
 
         val feature = planFeature.feature ?: throw BusinessException(ErrorCode.FEATURE_NOT_FOUND)
 
-        // 4. Feature 와 PlanFeature 를 확인해서 사용량이 남아있는지, 그리고 사용한 사용량보다 작은지 판별
+        // 4. 기본 제한량에 대해서 체크
+        // 만약 글자수 단위 제한인 경우 -> 매회당 제한걸림
+        // 월 회수제한인 경우 해당 월의 시작부터 사용하고자하는 일까지의 사용량 체크해야함
+        // 4-1. 일단 갈자수 단위 제한부터 시작
         val unitUsed = param.unitUsed
-        if (unitUsed > planFeature.customLimit) {
+
+        if (feature.unit === FeatureUnit.CHARS && unitUsed > feature.defaultLimit) {
             throw BusinessException(ErrorCode.PLAN_LIMIT_EXCEEDED)
         }
 
+        // 4-2. 월횟수 단위 제한 -> 기존 사용기록 검색 필요
+        // 시작일 체크
+        val startDate = LocalDate.now().withDayOfMonth(1)
+        val endDate = LocalDate.now()
+
+        val creditUsageCount: Long = creditUsageRepositorySupport.getCountCustomerFeatureUsage(customerId, feature.featureId, startDate, endDate)
+
+        if (feature.unit === FeatureUnit.MONTHLY && creditUsageCount > feature.defaultLimit) {
+            throw BusinessException(ErrorCode.PLAN_LIMIT_EXCEEDED)
+        }
+
+        // 5. 사용 크레딧 계산
         val creditPerUnit = feature.creditPerUse
         val totalCreditToUse = feature.unit.calculateCredit(unitUsed, creditPerUnit)
 
@@ -66,13 +85,11 @@ class CustomerServiceImpl(
         customerRepository.save(customer)
 
         // 6. 크레딧 사용 이력 저장
-        val usageCredit = CreditUsage.doCreate(customer, feature, LocalDateTime.now(), totalCreditToUse, CreditUsageStatus.USAGE);
-        creditUsageRepository.save(usageCredit)
+        val usageCredit = creditUsageRepository.save(CreditUsage.doCreate(customer, feature, LocalDateTime.now(), unitUsed, totalCreditToUse, CreditUsageStatus.USAGE))
 
         // 7. 트랜잭션 저장
         val creditTransaction = CreditTransaction.doCreate(customer, totalCreditToUse, Type.USAGE, usageCredit)
         creditTransactionRepository.save(creditTransaction)
-
 
         // 8. 리턴 객채 생성후 완료 처리
         return CustomerDto.UseFeatureResponse(customerId, totalCreditToUse, 0L);

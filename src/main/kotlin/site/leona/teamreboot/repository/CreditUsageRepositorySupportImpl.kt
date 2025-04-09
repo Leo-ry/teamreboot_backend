@@ -8,6 +8,7 @@ import site.leona.teamreboot.entity.CreditUsage
 import site.leona.teamreboot.entity.QCreditUsage
 import site.leona.teamreboot.entity.QCustomer
 import site.leona.teamreboot.entity.QFeature
+import site.leona.teamreboot.entity.QFeature.feature
 import site.leona.teamreboot.model.StatisticsDto
 import java.time.LocalDate
 
@@ -49,6 +50,25 @@ class CreditUsageRepositorySupportImpl: CreditUsageRepositorySupport, CommonRepo
             .orderBy(creditUsage.usedAt.desc())
             .groupBy(feature.name)
             .fetch()
+    }
+
+    override fun getCountCustomerFeatureUsage(customerId:Long, featureId: Long?, startDate: LocalDate, endDate: LocalDate): Long {
+        // Entity
+        val customer: QCustomer = QCustomer.customer
+        val creditUsage: QCreditUsage = QCreditUsage.creditUsage
+
+        // Where Clause
+        val bb: BooleanBuilder = BooleanBuilder()
+        bb.and(creditUsage.customer.customerId.eq(customerId))
+            .and(creditUsage.feature.featureId.eq(featureId))
+
+        bb.and(creditUsage.usedAt.between(startDate.atStartOfDay(), endDate.atTime(23,59,59)))
+
+        return select(feature.featureId.count())
+            .from(creditUsage)
+            .join(creditUsage.customer, customer)
+            .groupBy(creditUsage.feature.featureId)
+            .fetchOne() ?: 0L
     }
 
 }

@@ -11,7 +11,7 @@ import site.leona.teamreboot.common.model.GlobalResponse
 import site.leona.teamreboot.common.model.RequestContext
 import java.time.Instant
 
-@RestControllerAdvice(basePackages = ["com.site.leona.teamreboot.api"])
+@RestControllerAdvice(basePackages = ["site.leona.teamreboot"])
 class DefaultHandler : ResponseBodyAdvice<Any> {
 
     override fun supports(returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>): Boolean {

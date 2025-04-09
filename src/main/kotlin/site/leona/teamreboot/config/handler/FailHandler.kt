@@ -16,7 +16,7 @@ import site.leona.teamreboot.config.exception.BusinessException
 import java.time.Instant
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@RestControllerAdvice(basePackages = ["com.site.leona.teamreboot.api"])
+@RestControllerAdvice(basePackages = ["site.leona.teamreboot"])
 class FailHandler {
 
     @ExceptionHandler(BusinessException::class)
